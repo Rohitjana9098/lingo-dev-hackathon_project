@@ -1,0 +1,30 @@
+services:
+  # The Backend Service (Python/FastAPI)
+  - type: web
+    name: taxlayer-backend
+    env: python
+    region: ohio
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+
+  # The Frontend Service (Node.js/Next.js)
+  - type: web
+    name: taxlayer-frontend
+    env: node
+    region: ohio
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm run start"
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NEXT_PUBLIC_API_URL
+        # This will securely connect your frontend to your backend on Render automatically!
+        fromService:
+          type: web
+          name: taxlayer-backend
+          envVarKey: RENDER_EXTERNAL_URL
