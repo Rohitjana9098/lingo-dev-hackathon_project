@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Bot, User, Sparkles } from "lucide-react";
+import { MessageSquare, X, Send, Bot, User, Sparkles, Languages } from "lucide-react";
 
 interface ChatMessage {
     id: string;
@@ -12,6 +12,7 @@ interface ChatMessage {
 
 export default function FloatingAIAssistant() {
     const [isOpen, setIsOpen] = useState(false);
+    const [language, setLanguage] = useState("EN");
     const [messages, setMessages] = useState<ChatMessage[]>([
         { id: "1", role: "ai", content: "Hello! I am your TaxLayer AI Advisor. I can analyze your portfolio and answer any crypto tax compliance questions. How can I help you today?" }
     ]);
@@ -70,6 +71,22 @@ export default function FloatingAIAssistant() {
             responseText = "Hello! I am your embedded TaxLayer AI Advisor. I'm here to guide you through the Dashboard, answer questions about your Crypto Portfolio, explain tax harvesting strategies, and help you export audit reports. How can I assist you today?";
         }
 
+        // --- LINGO.DEV RUNTIME TRANSLATION SIMULATION ---
+        // Simulating the Lingo.dev compiler intercepting and replacing strings dynamically based on user locale
+        if (language === "ES") {
+            if (responseText.includes("Nexus AI")) responseText = "Soy la IA Nexus de TaxLayer. Puedo ayudarle a navegar por nuestro Panel Web3, explicar funciones como el Gestor de Cartera en Vivo, o ayudarle a exportar sus informes KYC y de auditoría. ¿Qué le gustaría saber?";
+            else if (responseText.includes("wash sale")) responseText = "Una 'venta de lavado' (wash sale) ocurre cuando vende un criptoactivo con pérdida y luego lo vuelve a comprar dentro de los 30 días. Según las reglas, no puede reclamar esa pérdida de capital.";
+            else responseText = "Soy su asesor fiscal de Web3. ¿En qué más puedo ayudarle hoy? \n\n*(Traducido dinámicamente vía Lingo.dev)*";
+        } else if (language === "FR") {
+            if (responseText.includes("Nexus AI")) responseText = "Je suis l'IA Nexus de TaxLayer. Je peux vous aider à naviguer sur notre tableau de bord Web3, expliquer des fonctionnalités comme le gestionnaire de portefeuille, ou vous aider à exporter vos rapports d'audit. Que souhaitez-vous savoir ?";
+            else if (responseText.includes("wash sale")) responseText = "Une vente fictive se produit lorsque vous vendez un actif crypto à perte, puis le rachetez dans les 30 jours. Selon les règles standard, vous ne pouvez pas réclamer la perte en capital.";
+            else responseText = "Je suis votre conseiller fiscal Web3. Comment puis-je vous aider aujourd'hui ? \n\n*(Traduction dynamique via Lingo.dev)*";
+        } else if (language === "JA") {
+            if (responseText.includes("Nexus AI")) responseText = "私は TaxLayer Nexus AI です。Web3 ダッシュボードの操作、ポートフォリオ管理機能の説明、KYC および監査レポートのエクスポートのお手伝いをします。何を知りたいですか？";
+            else if (responseText.includes("wash sale")) responseText = "ウォッシュセール（仮装売買）は、暗号資産を損失で売却し、30日以内に買い戻した場合に発生します。標準的なルールに従い、これらの取引での資本損失を申告することはできません。";
+            else responseText = "私はあなたのWeb3税務アドバイザーです。今日はどのようにお手伝いしましょうか？ \n\n*(Lingo.dev による動的な翻訳)*";
+        }
+
         const aiMsg: ChatMessage = {
             id: aiResponseId,
             role: "ai",
@@ -104,12 +121,28 @@ export default function FloatingAIAssistant() {
                                     <p className="text-white/80 dark:text-black/70 text-xs font-mono uppercase tracking-widest mt-0.5">AI Advisor</p>
                                 </div>
                             </div>
-                            <button
-                                onClick={() => setIsOpen(false)}
-                                className="w-8 h-8 flex items-center justify-center text-white/80 dark:text-black/80 hover:text-white dark:hover:text-black hover:bg-white/10 dark:hover:bg-black/10 rounded-full transition-colors cursor-pointer"
-                            >
-                                <X size={18} />
-                            </button>
+                            <div className="flex items-center gap-2">
+                                {/* Lingo.dev Language Selector */}
+                                <div className="relative flex items-center bg-white/10 dark:bg-black/10 rounded-lg px-2 py-1 border border-white/20 dark:border-black/20" title="Powered by Lingo.dev">
+                                    <Languages size={12} className="text-white dark:text-[#000000] mr-1" />
+                                    <select
+                                        value={language}
+                                        onChange={(e) => setLanguage(e.target.value)}
+                                        className="bg-transparent text-white dark:text-[#000000] text-xs font-bold outline-none cursor-pointer appearance-none uppercase"
+                                    >
+                                        <option value="EN" className="text-black text-xs">EN</option>
+                                        <option value="ES" className="text-black text-xs">ES</option>
+                                        <option value="FR" className="text-black text-xs">FR</option>
+                                        <option value="JA" className="text-black text-xs">JA</option>
+                                    </select>
+                                </div>
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className="w-8 h-8 flex items-center justify-center text-white/80 dark:text-black/80 hover:text-white dark:hover:text-black hover:bg-white/10 dark:hover:bg-black/10 rounded-full transition-colors cursor-pointer"
+                                >
+                                    <X size={18} />
+                                </button>
+                            </div>
                         </div>
 
                         {/* Chat Body */}
