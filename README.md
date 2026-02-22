@@ -1,5 +1,7 @@
 # TaxLayer Web3 Dashboard
 
+🚀 **Live Deployment (Netlify):** [https://cool-pixie-3ac485.netlify.app/](https://cool-pixie-3ac485.netlify.app/)
+
 TaxLayer is an advanced, fully-responsive Web3 and Crypto tax calculation dashboard. It empowers users to monitor their real-time trading portfolios, estimate complex tax liabilities based on global frameworks, and seamlessly interact with an embedded AI Tax Assistant.
 
 ![TaxLayer Preview](https://github.com/Rohitjana9098/Lingo-dev-hackathon_project/assets/mock-preview.png) *(Preview Placeholder)*
